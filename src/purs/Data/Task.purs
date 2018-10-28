@@ -1,7 +1,6 @@
 module Data.Task
   ( Task
   , new
-  , complete
   ) where
 
 import Prelude
@@ -24,6 +23,3 @@ new description = do
     , description
     , completed: false
     }
-
-complete :: Task -> Task
-complete = _ { completed = true }
