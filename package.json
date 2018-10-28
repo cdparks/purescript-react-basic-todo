@@ -1,0 +1,29 @@
+{
+  "name": "purescript-react-basic-example",
+  "version": "0.1.0",
+  "author": "Chris Parks",
+  "repository": "https://github.com/cdparks/purescript-react-basic-example",
+  "license": "MIT",
+  "scripts": {
+    "setup": "yarn install && psc-package install",
+    "build": "yarn setup && yarn build:sass && yarn build:ps",
+    "build:sass": "node-sass --omit-source-map-url src/scss/styles.scss dist/css/styles.css",
+    "build:ps": "yarn pulp browserify -O --to dist/js/main.js",
+    "add:ps": "psc-package install",
+    "repl": "yarn pulp repl",
+    "clean": "rm -rf dist output",
+    "reset": "yarn clean && rm -rf node_modules .psc-package .psci_modules .pulp-cache yarn-error.log",
+    "pulp": "PATH=./node_modules/.bin:$PATH pulp"
+  },
+  "dependencies": {
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0"
+  },
+  "devDependencies": {
+    "psc-package-bin-simple": "^1.0.4",
+    "purescript": "^0.12.0",
+    "pulp": "^12.3.0",
+    "bulma": "^0.7.2",
+    "node-sass": "^4.9.4"
+  }
+}
