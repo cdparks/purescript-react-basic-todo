@@ -1,6 +1,6 @@
-# purescript-react-basic-example
+# purescript-react-basic-todo
 
-Example project using [PureScript][purescript], [React][react],
+Example Todo app using [PureScript][purescript], [React][react],
 [purescript-react-basic][react-basic], and [Bulma][bulma].
 
 # Build

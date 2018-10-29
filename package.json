@@ -1,8 +1,8 @@
 {
-  "name": "purescript-react-basic-example",
+  "name": "purescript-react-basic-todo",
   "version": "0.1.0",
   "author": "Chris Parks",
-  "repository": "https://github.com/cdparks/purescript-react-basic-example",
+  "repository": "https://github.com/cdparks/purescript-react-basic-todo",
   "license": "MIT",
   "scripts": {
     "setup": "yarn install && psc-package install",
