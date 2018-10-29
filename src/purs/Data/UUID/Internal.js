@@ -2,7 +2,7 @@
 
 exports.newImpl = function(mkUUID) {
   return function() {
-    var uuid = require('uuid/v4').uuidv4()
+    var uuid = require('uuid/v4')()
     return mkUUID(uuid)
   }
 }
@@ -10,7 +10,7 @@ exports.newImpl = function(mkUUID) {
 exports.parseImpl = function(Nothing) {
   return function(mkJustUUID) {
     return function(str) {
-      var valid = require('uuid-validate').validate(str, 4)
+      var valid = require('uuid-validate')(str, 4)
       return valid ? mkJustUUID(str) : Nothing
     }
   }

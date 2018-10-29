@@ -10,7 +10,7 @@ component =
   React.stateless {displayName: "Header", render}
  where
   render _ =
-    R.h1
-      { className: "title"
+    R.p
+      { className: "panel-heading has-text-centered"
       , children: [R.text "Todos"]
       }

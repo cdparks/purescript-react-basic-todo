@@ -5,11 +5,12 @@ module Components.App
 import Prelude
 
 import Browser.Storage as Storage
+import Components.Clear as Clear
+import Components.Filters as Filters
 import Components.Header as Header
 import Components.Input as Input
 import Components.Tasks as Tasks
-import Components.Filters as Filters
-import Data.Array (filter, snoc)
+import Data.Array (any, filter, snoc)
 import Data.Filter (Filter(..))
 import Data.Task (Task)
 import Data.UUID (UUID)
@@ -41,43 +42,59 @@ component =
       $ _ { tasks = props.initialTasks }
 
   render {state, setState, setStateThen} =
-    R.section
-     { className: "section"
-     , children:
-       [ R.div
-         { className: "container"
-         , children:
-           [ React.element Header.component {}
-           , React.element Input.component
-             { onSubmit: \task -> addTask task `setStateThen` save
-             }
-           , React.element Tasks.component
-             { tasks: state.tasks
-             , onClear: \uuid -> clearTask uuid `setStateThen` save
-             , onComplete: \uuid -> completeTask uuid `setStateThen` save
-             }
-           , React.element Filters.component
-             { filter: state.filter
-             , onSetFilter: setState <<< setFilter
-             }
-           ]
-         }
-       ]
-     }
+    panel
+      [ React.element Header.component {}
+      , React.element Input.component
+        { onSubmit: addTask >>> (_ `setStateThen` save)
+        }
+      , React.element Filters.component
+        { filter: state.filter
+        , onSetFilter: setFilter >>> setState
+        }
+      , React.element Tasks.component
+        { tasks: filterBy state.filter state.tasks
+        , onDelete: deleteTask >>> (_ `setStateThen` save)
+        , onToggle: toggleTask >>> (_ `setStateThen` save)
+        }
+      , renderIf (any _.completed state.tasks)
+        $ React.element Clear.component
+          { onClear: deleteCompleted `setStateThen` save
+          }
+      ]
+
+panel :: Array React.JSX -> React.JSX
+panel elements =
+  R.section
+    { className: "section"
+    , children:
+      [ R.nav
+        { className: "panel"
+        , children: elements
+        }
+      ]
+    }
+
+renderIf :: Boolean -> React.JSX -> React.JSX
+renderIf cond element
+  | cond = element
+  | otherwise = React.empty
 
 addTask :: Task -> State -> State
 addTask task s = s { tasks = s.tasks `snoc` task }
 
-clearTask :: UUID -> State -> State
-clearTask uuid s = s { tasks = filter isOtherTask s.tasks }
+deleteTask :: UUID -> State -> State
+deleteTask uuid s = s { tasks = filter isOtherTask s.tasks }
  where
   isOtherTask t = t.uuid /= uuid
 
-completeTask :: UUID -> State -> State
-completeTask uuid s = s { tasks = map completeMatch s.tasks }
+deleteCompleted :: State -> State
+deleteCompleted s = s { tasks = filter (not <<< _.completed) s.tasks }
+
+toggleTask :: UUID -> State -> State
+toggleTask uuid s = s { tasks = map toggleMatch s.tasks }
  where
-  completeMatch t
-    | t.uuid == uuid = t { completed = true }
+  toggleMatch t
+    | t.uuid == uuid = t { completed = not $ t.completed }
     | otherwise = t
 
 setFilter :: Filter -> State -> State
