@@ -7,7 +7,7 @@
   "scripts": {
     "setup": "yarn install && psc-package install",
     "build": "yarn setup && yarn build:sass && yarn build:ps",
-    "build:sass": "node-sass --omit-source-map-url src/scss/styles.scss dist/css/styles.css",
+    "build:sass": "node-sass --importer node_modules/node-sass-import --omit-source-map-url src/scss/styles.scss dist/css/styles.css",
     "build:ps": "yarn pulp browserify -O --to dist/js/main.js",
     "add:ps": "psc-package install",
     "repl": "yarn pulp repl",
@@ -26,6 +26,7 @@
     "purescript": "^0.12.0",
     "pulp": "^12.3.0",
     "bulma": "^0.7.2",
-    "node-sass": "^4.9.4"
+    "node-sass": "^4.9.4",
+    "node-sass-import": "^2.0.1"
   }
 }
