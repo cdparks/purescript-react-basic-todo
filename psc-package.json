@@ -10,7 +10,6 @@
     "foldable-traversable",
     "generics-rep",
     "maybe",
-    "ordered-collections",
     "prelude",
     "psci-support",
     "react-basic",
